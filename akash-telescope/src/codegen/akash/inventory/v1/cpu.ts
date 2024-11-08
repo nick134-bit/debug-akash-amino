@@ -1,0 +1,251 @@
+import { ResourcePair, ResourcePairAmino, ResourcePairSDKType } from "./resourcepair";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { GlobalDecoderRegistry } from "../../../registry";
+/** CPUInfo reports CPU details */
+export interface CPUInfo {
+  id: string;
+  vendor: string;
+  model: string;
+  vcores: number;
+}
+export interface CPUInfoProtoMsg {
+  typeUrl: "/akash.inventory.v1.CPUInfo";
+  value: Uint8Array;
+}
+/** CPUInfo reports CPU details */
+export interface CPUInfoAmino {
+  id: string;
+  vendor: string;
+  model: string;
+  vcores: number;
+}
+export interface CPUInfoAminoMsg {
+  type: "/akash.inventory.v1.CPUInfo";
+  value: CPUInfoAmino;
+}
+/** CPUInfo reports CPU details */
+export interface CPUInfoSDKType {
+  id: string;
+  vendor: string;
+  model: string;
+  vcores: number;
+}
+/** CPU reports CPU inventory details */
+export interface CPU {
+  quantity: ResourcePair;
+  info: CPUInfo[];
+}
+export interface CPUProtoMsg {
+  typeUrl: "/akash.inventory.v1.CPU";
+  value: Uint8Array;
+}
+/** CPU reports CPU inventory details */
+export interface CPUAmino {
+  quantity: ResourcePairAmino;
+  info: CPUInfoAmino[];
+}
+export interface CPUAminoMsg {
+  type: "/akash.inventory.v1.CPU";
+  value: CPUAmino;
+}
+/** CPU reports CPU inventory details */
+export interface CPUSDKType {
+  quantity: ResourcePairSDKType;
+  info: CPUInfoSDKType[];
+}
+function createBaseCPUInfo(): CPUInfo {
+  return {
+    id: "",
+    vendor: "",
+    model: "",
+    vcores: 0
+  };
+}
+export const CPUInfo = {
+  typeUrl: "/akash.inventory.v1.CPUInfo",
+  is(o: any): o is CPUInfo {
+    return o && (o.$typeUrl === CPUInfo.typeUrl || typeof o.id === "string" && typeof o.vendor === "string" && typeof o.model === "string" && typeof o.vcores === "number");
+  },
+  isSDK(o: any): o is CPUInfoSDKType {
+    return o && (o.$typeUrl === CPUInfo.typeUrl || typeof o.id === "string" && typeof o.vendor === "string" && typeof o.model === "string" && typeof o.vcores === "number");
+  },
+  isAmino(o: any): o is CPUInfoAmino {
+    return o && (o.$typeUrl === CPUInfo.typeUrl || typeof o.id === "string" && typeof o.vendor === "string" && typeof o.model === "string" && typeof o.vcores === "number");
+  },
+  encode(message: CPUInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.vendor !== "") {
+      writer.uint32(18).string(message.vendor);
+    }
+    if (message.model !== "") {
+      writer.uint32(26).string(message.model);
+    }
+    if (message.vcores !== 0) {
+      writer.uint32(32).uint32(message.vcores);
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): CPUInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCPUInfo();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.string();
+          break;
+        case 2:
+          message.vendor = reader.string();
+          break;
+        case 3:
+          message.model = reader.string();
+          break;
+        case 4:
+          message.vcores = reader.uint32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<CPUInfo>): CPUInfo {
+    const message = createBaseCPUInfo();
+    message.id = object.id ?? "";
+    message.vendor = object.vendor ?? "";
+    message.model = object.model ?? "";
+    message.vcores = object.vcores ?? 0;
+    return message;
+  },
+  fromAmino(object: CPUInfoAmino): CPUInfo {
+    const message = createBaseCPUInfo();
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    }
+    if (object.vendor !== undefined && object.vendor !== null) {
+      message.vendor = object.vendor;
+    }
+    if (object.model !== undefined && object.model !== null) {
+      message.model = object.model;
+    }
+    if (object.vcores !== undefined && object.vcores !== null) {
+      message.vcores = object.vcores;
+    }
+    return message;
+  },
+  toAmino(message: CPUInfo): CPUInfoAmino {
+    const obj: any = {};
+    obj.id = message.id ?? "";
+    obj.vendor = message.vendor ?? "";
+    obj.model = message.model ?? "";
+    obj.vcores = message.vcores ?? 0;
+    return obj;
+  },
+  fromAminoMsg(object: CPUInfoAminoMsg): CPUInfo {
+    return CPUInfo.fromAmino(object.value);
+  },
+  fromProtoMsg(message: CPUInfoProtoMsg): CPUInfo {
+    return CPUInfo.decode(message.value);
+  },
+  toProto(message: CPUInfo): Uint8Array {
+    return CPUInfo.encode(message).finish();
+  },
+  toProtoMsg(message: CPUInfo): CPUInfoProtoMsg {
+    return {
+      typeUrl: "/akash.inventory.v1.CPUInfo",
+      value: CPUInfo.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(CPUInfo.typeUrl, CPUInfo);
+function createBaseCPU(): CPU {
+  return {
+    quantity: ResourcePair.fromPartial({}),
+    info: []
+  };
+}
+export const CPU = {
+  typeUrl: "/akash.inventory.v1.CPU",
+  is(o: any): o is CPU {
+    return o && (o.$typeUrl === CPU.typeUrl || ResourcePair.is(o.quantity) && Array.isArray(o.info) && (!o.info.length || CPUInfo.is(o.info[0])));
+  },
+  isSDK(o: any): o is CPUSDKType {
+    return o && (o.$typeUrl === CPU.typeUrl || ResourcePair.isSDK(o.quantity) && Array.isArray(o.info) && (!o.info.length || CPUInfo.isSDK(o.info[0])));
+  },
+  isAmino(o: any): o is CPUAmino {
+    return o && (o.$typeUrl === CPU.typeUrl || ResourcePair.isAmino(o.quantity) && Array.isArray(o.info) && (!o.info.length || CPUInfo.isAmino(o.info[0])));
+  },
+  encode(message: CPU, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.quantity !== undefined) {
+      ResourcePair.encode(message.quantity, writer.uint32(10).fork()).ldelim();
+    }
+    for (const v of message.info) {
+      CPUInfo.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): CPU {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCPU();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.quantity = ResourcePair.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.info.push(CPUInfo.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromPartial(object: Partial<CPU>): CPU {
+    const message = createBaseCPU();
+    message.quantity = object.quantity !== undefined && object.quantity !== null ? ResourcePair.fromPartial(object.quantity) : undefined;
+    message.info = object.info?.map(e => CPUInfo.fromPartial(e)) || [];
+    return message;
+  },
+  fromAmino(object: CPUAmino): CPU {
+    const message = createBaseCPU();
+    if (object.quantity !== undefined && object.quantity !== null) {
+      message.quantity = ResourcePair.fromAmino(object.quantity);
+    }
+    message.info = object.info?.map(e => CPUInfo.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: CPU): CPUAmino {
+    const obj: any = {};
+    obj.quantity = message.quantity ? ResourcePair.toAmino(message.quantity) : ResourcePair.toAmino(ResourcePair.fromPartial({}));
+    if (message.info) {
+      obj.info = message.info.map(e => e ? CPUInfo.toAmino(e) : undefined);
+    } else {
+      obj.info = message.info;
+    }
+    return obj;
+  },
+  fromAminoMsg(object: CPUAminoMsg): CPU {
+    return CPU.fromAmino(object.value);
+  },
+  fromProtoMsg(message: CPUProtoMsg): CPU {
+    return CPU.decode(message.value);
+  },
+  toProto(message: CPU): Uint8Array {
+    return CPU.encode(message).finish();
+  },
+  toProtoMsg(message: CPU): CPUProtoMsg {
+    return {
+      typeUrl: "/akash.inventory.v1.CPU",
+      value: CPU.encode(message).finish()
+    };
+  }
+};
+GlobalDecoderRegistry.register(CPU.typeUrl, CPU);

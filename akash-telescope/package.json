@@ -1,0 +1,65 @@
+{
+  "name": "akash-telescope",
+  "version": "0.0.1",
+  "description": "test",
+  "author": "nick134-bit <nick134-bit@proton.me>",
+  "homepage": "",
+  "license": "SEE LICENSE IN LICENSE",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "typings": "dist/index.d.ts",
+  "directories": {
+    "lib": "src"
+  },
+  "files": [
+    "dist",
+    "!CHANGELOG.md"
+  ],
+  "scripts": {
+    "build:cjs": "yarn tsc -p tsconfig.json --outDir dist --module commonjs || true",
+    "build:mjs": "yarn tsc -p tsconfig.json --outDir mjs --module es2022 --declaration false || true",
+    "clean:mjs": "rimraf mjs",
+    "clean:dist": "rimraf dist",
+    "clean": "npm run clean:mjs && npm run clean:dist",
+    "build:rename": "publish-scripts --cmd rename --srcDir mjs --outDir dist --findExt js --replaceExt mjs --no-rmDir",
+    "build": "npm run clean && npm run build:cjs && npm run build:mjs && npm run build:rename",
+    "codegen": "node scripts/codegen.js",
+    "prepare": "npm run build",
+    "lint": "eslint src --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nick134-bit/nicks-akashjs"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/nick134-bit/nicks-akashjs/issues"
+  },
+  "devDependencies": {
+    "@cosmology/telescope": "^1.10.8",
+    "@types/jest": "^29.5.13",
+    "eslint": "9.12.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "jest": "^29.7.0",
+    "jest-in-case": "^1.0.2",
+    "prettier": "^3.3.3",
+    "publish-scripts": "1.10.0",
+    "rimraf": "^6.0.1",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "@cosmjs/amino": "^0.32.4",
+    "@cosmjs/proto-signing": "^0.32.4",
+    "@cosmjs/stargate": "npm:@liftedinit/stargate@0.32.4-ll.3",
+    "@cosmjs/tendermint-rpc": "^0.32.4",
+    "protobufjs": "^7.4.0"
+  }
+}
